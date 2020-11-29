@@ -46,3 +46,5 @@ ex5/common/__pycache__/__init__.cpython-38.pyc
 ex5/common/__pycache__/functions.cpython-38.pyc
 ex5/common/__pycache__/gradient.cpython-38.pyc
 ex5/common/__pycache__/layers.cpython-38.pyc
+ex5/dataset/lena_gray.png
+ex5/dataset/lena.png
