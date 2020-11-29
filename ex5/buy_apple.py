@@ -1,4 +1,4 @@
-from layer_native import *
+from layer_native import MulLayer
 
 if __name__ == "__main__":
     apple = 100
