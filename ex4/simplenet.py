@@ -17,6 +17,9 @@ class simpleNet:
         loss = cross_entropy_error(y,t)
         return loss
 
+# def f(W):
+#     return net.loss(x,t)
+
 if __name__ == "__main__":
     net = simpleNet()
     # print(net.W)
@@ -25,3 +28,7 @@ if __name__ == "__main__":
     np.argmax(p)
     t = np.array([0,0,1])
     print(net.loss(x,t))
+
+    f = lambda w: net.loss(x,t)
+    dw = numerical_gradient(f,net.W)
+    print(dw)
