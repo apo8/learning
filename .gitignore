@@ -36,3 +36,4 @@ ex4/dataset/lena.png
 ex4/dataset/lena_gray.png
 ex4/common/__pycache__/functions.cpython-38.pyc
 ex4/common/__pycache__/__init__.cpython-38.pyc
+ex4/common/__pycache__/gradient.cpython-38.pyc
