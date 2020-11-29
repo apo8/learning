@@ -30,11 +30,11 @@ class TwoLayerNet:
         return x
 
     def loss(self, x, t):
-        y = self.predict(x)
+        y = self.predict(x,t)
         return self.lastLayer.forward(y,t)
 
     def accuracy(self, x, t):
-        y = self.predict(x)
+        y = self.predict(x,t)
         y = np.argmax(y, axis=1)
         if  t.ndim != 1 : t = np.argmax(t, axis=1)
         accuracy = np.sum(y==t) / float(x.shape[0])
@@ -57,12 +57,13 @@ class TwoLayerNet:
         dout = 1
         dout = self.lastLayer.backward(dout)
         layers = list(self.layers.values())
+        layers.reverse()
         for layer in layers:
             dout = layer.backward(dout)
 
         grads = {}
-        grads['W1'] = self.layers['Affine1'].dw
+        grads['W1'] = self.layers['Affine1'].dW
         grads['b1'] = self.layers['Affine1'].db
-        grads['W2'] = self.layers['Affine2'].dw
+        grads['W2'] = self.layers['Affine2'].dW
         grads['b2'] = self.layers['Affine2'].db
         return grads
