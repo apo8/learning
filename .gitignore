@@ -12,3 +12,16 @@ ex3/dataset/t10k-images-idx3-ubyte.gz
 ex3/dataset/lena.png
 ex3/common/__pycache__/functions.cpython-38.pyc
 ex3/sample_weight.pkl
+dataset/lena_gray.png
+dataset/lena.png
+dataset/mnist.pkl
+common/__pycache__/__init__.cpython-38.pyc
+common/__pycache__/functions.cpython-38.pyc
+dataset/__pycache__/__init__.cpython-38.pyc
+dataset/__pycache__/mnist.cpython-38.pyc
+ex2/lena.png
+dataset/train-labels-idx1-ubyte.gz
+dataset/t10k-labels-idx1-ubyte.gz
+dataset/train-images-idx3-ubyte.gz
+dataset/t10k-images-idx3-ubyte.gz
+sample_weight.pkl
