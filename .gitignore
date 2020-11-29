@@ -40,3 +40,9 @@ ex4/common/__pycache__/gradient.cpython-38.pyc
 ex4/__pycache__/two_layer_net.cpython-38.pyc
 ex4/common/__pycache__/layers.cpython-38.pyc
 ex4/common/__pycache__/util.cpython-38.pyc
+ex5/__pycache__/layer_native.cpython-38.pyc
+ex5/common/__pycache__/util.cpython-38.pyc
+ex5/common/__pycache__/__init__.cpython-38.pyc
+ex5/common/__pycache__/functions.cpython-38.pyc
+ex5/common/__pycache__/gradient.cpython-38.pyc
+ex5/common/__pycache__/layers.cpython-38.pyc
