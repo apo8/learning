@@ -8,49 +8,6 @@ from common.layers import *
 from common.util import im2col
 from common.gradient import numerical_gradient
 
-class Convolution:
-    def __init__(self, W, b, stride=1, pad=0):
-        self.W = W
-        self.b = b
-        self.stride = stride
-        self.pad = pad
-
-    def forward(self,x):
-        FN, C, FH, FW = self.W.shape
-        N, C, H, W = x.shape
-        out_h = int(1 + (H + 2*self.pad - FH) / self.stride)
-        out_w = int(1 + (W + 2*self.pad - FW) / self.stride)
-
-        col = im2col(x, FH, FW, self.stride, self.pad)
-        col_w = self.W.reshape(FN, -1).T
-        out = np.dot(col, col_w) + self.b
-
-        out = out.reshape(N, out_h, out_w, -1).transpose(0, 3, 1, 2)
-
-        return out
-
-class Pooling:
-    def __init__(self, pool_h, pool_w, stride=1, pad=0):
-        self.pool_h = pool_h
-        self.pool_w = pool_w
-        self.stride = stride
-        self.pad = pad
-
-    def forward(self, x):
-        N, C, H, W = x.shape
-        out_h = int(1 + (H - self.pool_h) / self.stride)
-        out_w = int(1 + (W - self.pool_w) / self.stride)
-
-        col = im2col(x, self.pool_h, self.pool_w, self.stride, self.pad)
-        col = col.reshape(-1, self.pool_h*self.pool_w)
-
-        #max
-        out = np.max(col, axis=1)
-
-        out - out.reshape(N, out_h, out_w, C).transpose(0, 3, 1, 2)
-
-        return out
-
 class SimpleConvNet:
     def __init__(self, input_dim = (1,28,28), conv_param={'filter_num':30, 'filter_size':5, 'pad':0, 'stride':1},\
         hidden_size = 100, output_size=10, weight_init_std=0.01):
@@ -108,11 +65,40 @@ class SimpleConvNet:
 
         return acc / x.shape[0]
 
-if __name__ == "__main__":
-    x1 = np.random.rand(1,3,7,7)
-    col1 = im2col(x1, 5, 5, stride=1, pad=0)
-    print(col1.shape)
+    def gradient(self, x, t):
+        # forward
+        self.loss(x, t)
 
-    x2 = np.random.rand(10, 3, 7, 7)
-    col2 = im2col(x2, 5, 5, stride=1, pad=0)
-    print(col2.shape)
+        # backward
+        dout = 1
+        dout = self.last_layer.backward(dout)
+
+        layers = list(self.layers.values())
+        layers.reverse()
+        for layer in layers:
+            dout = layer.backward(dout)
+
+        # setting
+        grads = {}
+        grads['W1'], grads['b1'] = self.layers['Conv1'].dW, self.layers['Conv1'].db
+        grads['W2'], grads['b2'] = self.layers['Affine1'].dW, self.layers['Affine1'].db
+        grads['W3'], grads['b3'] = self.layers['Affine2'].dW, self.layers['Affine2'].db
+
+        return grads
+
+    def save_params(self, file_name="params.pkl"):
+        params = {}
+        for key, val in self.params.items():
+            params[key] = val
+        with open(file_name, 'wb') as f:
+            pickle.dump(params, f)
+
+    def load_params(self, file_name="params.pkl"):
+        with open(file_name, 'rb') as f:
+            params = pickle.load(f)
+        for key, val in params.items():
+            self.params[key] = val
+
+        for i, key in enumerate(['Conv1', 'Affine1', 'Affine2']):
+            self.layers[key].W = self.params['W' + str(i+1)]
+            self.layers[key].b = self.params['b' + str(i+1)]
