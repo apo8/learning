@@ -24,6 +24,7 @@ if __name__ == "__main__":
 
     network.save_params("params.pkl")
     print("Saved Network Parameters!")
+    print("aaa")
 
     markers = {'train': 'o', 'test': 's'}
     x = np.arange(max_epochs)
