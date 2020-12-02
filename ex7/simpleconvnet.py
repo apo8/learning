@@ -86,6 +86,28 @@ class SimpleConvNet:
 
         self.last_layer = SoftmaxWithLoss()
 
+    def predict(self, x):
+        for layer in self.layers.values():
+            x = layer.forward(x)
+        return x
+
+    def loss(self, x, t):
+        y = self.predict(x)
+        return self.last_layer.forward(y, t)
+
+    def accuracy(self, x, t, batch_size=100):
+        if t.ndim != 1: t = np.argmax(t, axis=1)
+        acc = 0.0
+
+        for i in range(int(x.shape[0] / batch_size)):
+            tx = x[i*batch_size:(i+1)*batch_size]
+            tt = t[i*batch_size:(i+1)*batch_size]
+            y = self.predict(tx)
+            y = np.argmax(y, axis =1)
+            acc += np.sum(y == t)
+
+        return acc / x.shape[0]
+
 if __name__ == "__main__":
     x1 = np.random.rand(1,3,7,7)
     col1 = im2col(x1, 5, 5, stride=1, pad=0)
